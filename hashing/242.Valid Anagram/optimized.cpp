@@ -18,7 +18,7 @@
 using namespace std;
 
 // using hash map
-/*
+
 class Solution {
 public:
     bool isAnagram(string s, string t) {
@@ -38,7 +38,7 @@ public:
 
     }
 };
-*/
+
 
 // Pattern : Frequency count
 // Approach 2:
