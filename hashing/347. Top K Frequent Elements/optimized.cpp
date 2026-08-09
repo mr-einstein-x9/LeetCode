@@ -21,26 +21,33 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<int> topKFrequent(vector<int>& nums, int k) {
-        if(nums.size() == k) return nums;
-        unordered_map<int,int>mp;
-        for(const auto &it : nums){ // O(n)
+    vector<int> topKFrequent(vector<int> &nums, int k)
+    {
+        if (nums.size() == k)
+            return nums;
+        unordered_map<int, int> mp;
+        for (const auto &it : nums)
+        { // O(n)
             mp[it]++;
         }
 
-        vector<vector<int>>bucket(nums.size()+1);
-        for(const auto&it : mp){// O(n(previous)+m) and m<=n so still O(n)
+        vector<vector<int>> bucket(nums.size() + 1);
+        for (const auto &it : mp)
+        { // O(m) and m<=n so still O(n)
             bucket[it.second].push_back(it.first);
         }
 
-        vector<int>ans;
-        for(int i = nums.size() ; i>=0; i--){ // O(n(previous)+n+m) -> O(n)
-            for(const auto &num : bucket[i]){
+        vector<int> ans;
+        for (int i = nums.size(); i >= 0; i--)
+        { // O(n+m) -> O(n)
+            for (const auto &num : bucket[i])
+            {
                 ans.push_back(num);
-                if(ans.size() == k)
-                return ans;
+                if (ans.size() == k)
+                    return ans;
             }
         }
         return ans;

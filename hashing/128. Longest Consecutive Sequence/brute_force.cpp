@@ -20,33 +20,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int longestConsecutive(vector<int>& nums) {
+    int longestConsecutive(vector<int> &nums)
+    {
         int n = nums.size();
-        if(n == 0) return 0;
+        if (n == 0)
+            return 0;
 
-        // to sort and remove erdundent elements at once
-        set<int>s(nums.begin() , nums.end());
+        // to sort and remove redundent elements at once
+        set<int> s(nums.begin(), nums.end()); // O(nlogn)
         // since set doesn't supports indexing so convert:  set->vector
-        vector<int>lookUp(s.begin() , s.end());
+        vector<int> lookUp(s.begin(), s.end()); // O(n)
 
         // atleast 1 element is in consecutive order so
         int len = 1;
         // now if we have several consecutive different sub-arrays so for comparision
         int maxlen = 1;
 
-        for(int i = 1 ; i<lookUp.size() ; i++){
+        for (int i = 1; i < lookUp.size(); i++)
+        { // O(m) m<=n
             // stand on element and look if it is consecutive element or not
-            if(lookUp[i]-1 == lookUp[i-1]) len++;
+            if (lookUp[i] - 1 == lookUp[i - 1])
+                len++;
             // now if one consecutive array ends and new consecutive array starts
-            else{
-                maxlen = max(maxlen , len);
+            else
+            {
+                maxlen = max(maxlen, len);
                 len = 1;
             }
         }
         // what if control didn't get into else block so we have to update maxlen before returning
-        maxlen = max(maxlen , len);
+        maxlen = max(maxlen, len);
 
         return maxlen;
     }

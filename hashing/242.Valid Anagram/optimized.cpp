@@ -4,7 +4,7 @@
 // Problem:
 // Given two strings - s&t , return true if s & t are anagram ,otehrwise false
 
-// Pattern: Hash Map
+// Pattern : Hash Map (frequency count)
 // Approach 1:
 // - Check if (size of s != size of t), return false
 // - store frequency of each character in HashMap
@@ -19,28 +19,33 @@ using namespace std;
 
 // using hash map
 
-class Solution {
+class Solution
+{
 public:
-    bool isAnagram(string s, string t) {
-        if(s.size() != t.size()) return false;
-        unordered_map<char ,int>mp;
+    bool isAnagram(string s, string t)
+    {
+        if (s.size() != t.size())
+            return false;
+        unordered_map<char, int> mp;
 
-        for(char i : s){
+        for (char i : s)
+        {
             mp[i]++;
         }
-        for(char i: t){
+        for (char i : t)
+        {
             mp[i]--;
         }
-        for(const auto &f:mp){
-            if(f.second != 0) return false;
+        for (const auto &f : mp)
+        {
+            if (f.second != 0)
+                return false;
         }
         return true;
-
     }
 };
 
-
-// Pattern : Frequency count
+// Pattern : Frequency count (using array) -> since all symbols are lowercase letters
 // Approach 2:
 // - Check if (size of s != size of t) return false
 // - make array of size 26 , arr[26]
@@ -49,24 +54,30 @@ public:
 // - lastly loop 3 check if all frequencies are 0 then true , otherwise false
 
 // using array
-class Solution {
+class Solution
+{
 public:
-    bool isAnagram(string s, string t) {
-        if(s.size() != t.size()) return false;
-        //since all character are lowercase
+    bool isAnagram(string s, string t)
+    {
+        if (s.size() != t.size())
+            return false;
+        // since all character are lowercase
         int arr[26] = {};
 
-        for(char i : s){
-           arr[i-'a']++;
+        for (char i : s)
+        {
+            arr[i - 'a']++;
         }
-        for(char i: t){
-            arr[i-'a']--;
+        for (char i : t)
+        {
+            arr[i - 'a']--;
         }
-        for(const auto &f:arr){
-            if(f != 0) return false;
+        for (const auto &f : arr)
+        {
+            if (f != 0)
+                return false;
         }
         return true;
-
     }
 };
 

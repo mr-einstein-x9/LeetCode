@@ -19,24 +19,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    vector<vector<string>> groupAnagrams(vector<string> &strs)
+    {
         vector<vector<string>> ans;
         vector<bool> stored(strs.size(), false);
-        
-        for (int i = 0; i < strs.size(); i++) {
+
+        for (int i = 0; i < strs.size(); i++)
+        {
             if (stored[i])
                 continue;
             vector<string> temp = {strs[i]};
             string s = strs[i];
             sort(s.begin(), s.end());
-            for (int j = i + 1; j < strs.size(); j++) {
+            for (int j = i + 1; j < strs.size(); j++)
+            {
                 if (stored[j])
                     continue;
                 string t = strs[j];
                 sort(t.begin(), t.end());
-                if (s == t) {
+                if (s == t)
+                {
                     temp.push_back(strs[j]);
                     stored[j] = true;
                 }
