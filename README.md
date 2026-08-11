@@ -63,7 +63,7 @@ LeetCode/
 |  49 | Group Anagram | Hashing | Hash MAp        |   🟡 Medium | Brute Force, Hash Map                  |    ✅   |
 | 128 | LOngest consecutive Sequence| Hashing | Hash MAp        |   🟡 Medium | Brute Force, Hash Map                  |    ✅   |
 | 242 | Valid Anagram | Hashing | Frequency Count |   🟢 Easy   | Brute Force, Hash Map, Frequency Array |    ✅   |
-|  347 | Top K Frequent Elements | Hashing | Hash MAp        |   🟡 Medium |  Hash Map                  |    ✅   |
+|  238 | Product of Array Except Self | Array | Prefix sum  |   🟡 Medium |  Hash Map                  |    ✅   |
 |  347 | Top K Frequent Elements | Hashing | Hash MAp        |   🟡 Medium |  Hash Map                  |    ✅   |
 
 ---
