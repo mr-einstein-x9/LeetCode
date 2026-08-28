@@ -1,140 +1,247 @@
-ary
-/
-977-squares-of-a-sorted-array.md
+# Problem: 977. Squares of a Sorted Array
 
+**Pattern:** Two Pointer — Opposite Ends
 
-Problem 977. Squares of a Sorted Array
-Pattern: Two Pointer — Opposite Ends
+## Intuition
 
-Intuition
-The array is already sorted in non-decreasing order, but squaring can change the order because negative numbers become positive.
+The array is already sorted:
+
+```text
+[-7, -3, 2, 3, 11]
+```
+
+But after squaring, the order can change:
+
+```text
+[49, 9, 4, 9, 121]
+```
+
+So we **cannot simply square every element and keep the same order**.
+
+The important observation is:
+
+> The **largest square** will always come from either the **leftmost** or the **rightmost** element.
+
+Why?
+
+The array is sorted, so the values with the largest absolute value are at the ends.
+
+```text
+[-7, -3, 2, 3, 11]
+ ↑              ↑
+left           right
+```
+
+Their squares are:
+
+```text
+49              121
+```
+
+So we compare the squares of both ends and put the **larger square at the end of `ans`**.
+
+## Why This Pattern?
+
+The array is sorted, but negative numbers make the squared array unsorted.
 
 For example:
 
+```text
 [-4, -1, 0, 3, 10]
 
+squares → [16, 1, 0, 9, 100]
+```
+
+The largest square is at one of the two ends.
+
+Therefore, we use **two pointers**:
+
+```text
+i → left side
+j → right side
+```
+
+And another pointer:
+
+```text
+k → position where we put the next largest square
+```
+
+Since we are finding the largest value first, we fill `ans` **from right to left**.
+
+## Approach
+
+1. Create an answer array `ans` of the same size.
+2. Set `i = 0` at the beginning.
+3. Set `j = n - 1` at the end.
+4. Set `k = n - 1` at the last position of `ans`.
+5. Calculate the square of `nums[i]` and `nums[j]`.
+6. Compare both squares:
+
+   * If `left square > right square`, put it at `ans[k]` and move `i`.
+   * Otherwise, put the right square at `ans[k]` and move `j`.
+7. Move `k` backward.
+8. Continue until all elements are processed.
+
+## Example
+
+Consider:
+
+```text
+nums = [-7, -3, 2, 3, 11]
+```
+
+Initially:
+
+```text
+i                   j
+↓                   ↓
+-7  -3   2   3    11
+```
+
 Squares:
-[16, 1, 0, 9, 100]
-The key observation is:
 
-The largest absolute values are always at the two ends of a sorted array.
+```text
+49                  121
+```
 
-So the largest square must be either:
+`121` is larger, so put it at the last position:
 
-nums[left]²
-     OR
-nums[right]²
-We compare them and put the larger square at the end of the answer.
+```text
+ans = [_, _, _, _, 121]
+```
 
-Simple Example
-nums = [-4, -1, 0, 3, 10]
+Move `j` and `k`:
 
- ↑                 ↑
-left              right
+```text
+i              j
+↓              ↓
+-7  -3   2    3   11
+```
 
--4² = 16
-10² = 100
-100 is larger, so:
+Now:
 
-[_, _, _, _, 100]
-Move right inward.
+```text
+49              9
+```
 
-Next:
+`49` is larger:
 
--4² = 16
- 3² = 9
-So:
+```text
+ans = [_, _, _, 49, 121]
+```
 
-[_, _, _, 16, 100]
-Continue until all elements are processed.
+Continue the same process.
 
-Final:
+Final result:
 
-[0, 1, 9, 16, 100]
-Why This Pattern?
-The input is sorted, and we need to find the largest square repeatedly.
+```text
+[4, 9, 9, 49, 121]
+```
 
-Because the largest absolute value must be at one of the two ends, we only need to compare:
+## Why Fill `ans` From Right to Left?
 
-left ↔ right
-This gives the Two Pointer — Opposite Ends pattern.
+At every step, we find the **largest remaining square**.
 
-Approach
-Set left at the beginning and right at the end.
+So it belongs at the current largest empty position.
 
-Create an answer array of the same size.
+```text
+Largest → ans[n-1]
+Next largest → ans[n-2]
+Next → ans[n-3]
+...
+```
 
-Compare nums[left]² and nums[right]².
+That's why:
 
-Put the larger square at the back of ans.
+```cpp
+k--;
+```
 
-Move the pointer whose square was used.
+after every insertion.
 
-Move the answer index backward.
+## Why Are We Comparing Only the Two Ends?
 
-Repeat until left > right.
+Consider:
 
-Algorithm
-left = 0
-right = n - 1
+```text
+[-7, -3, 2, 3, 11]
+```
+
+The absolute values increase toward one of the ends.
+
+The middle elements cannot have a larger absolute value than both relevant ends.
+
+Therefore, the largest remaining square must come from:
+
+```cpp
+nums[i]
+```
+
+or
+
+```cpp
+nums[j]
+```
+
+Once we choose the larger one, we remove it from consideration by moving that pointer.
+
+## Algorithm
+
+```text
+i = 0
+j = n - 1
 k = n - 1
 
-while left <= right:
+while i <= j:
 
-    leftSquare  = nums[left]²
-    rightSquare = nums[right]²
+    leftSquare  = nums[i]²
+    rightSquare = nums[j]²
 
     if leftSquare > rightSquare:
         ans[k] = leftSquare
-        left++
+        i++
     else:
         ans[k] = rightSquare
-        right--
+        j--
 
     k--
 
 return ans
-Brute Force
-Square every element and then sort the array.
+```
 
+## Complexity
+
+* **Time:** `O(n)`
+* **Space:** `O(n)`
+
+We visit each element once.
+
+The `ans` array requires `O(n)` extra space.
+
+## Code
+
+```cpp
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> ans(n, 0);
 
-        for(int i = 0; i < nums.size(); i++)
-            nums[i] *= nums[i];
+        int i = 0;
+        int j = n - 1;
+        int k = n - 1;
 
-        sort(nums.begin(), nums.end());
+        while (i <= j) {
+            int l_sqr = nums[i] * nums[i];
+            int r_sqr = nums[j] * nums[j];
 
-        return nums;
-    }
-};
-Time: O(n log n)
-Space: O(1) auxiliary
-
-Optimised — Two Pointers
-class Solution {
-public:
-    vector<int> sortedSquares(vector<int>& nums) {
-
-        vector<int> ans(nums.size());
-
-        int left = 0;
-        int right = nums.size() - 1;
-        int k = nums.size() - 1;
-
-        while(left <= right) {
-
-            int leftSquare = nums[left] * nums[left];
-            int rightSquare = nums[right] * nums[right];
-
-            if(leftSquare > rightSquare) {
-                ans[k] = leftSquare;
-                left++;
-            }
-            else {
-                ans[k] = rightSquare;
-                right--;
+            if (l_sqr > r_sqr) {
+                ans[k] = l_sqr;
+                i++;
+            } else {
+                ans[k] = r_sqr;
+                j--;
             }
 
             k--;
@@ -143,20 +250,28 @@ public:
         return ans;
     }
 };
-Time: O(n)
-Space: O(n)
+```
 
-Key Takeaway
-Sorted array + need sorted squares → compare both ends.
+## Key Takeaway
 
-Sorted array
-     ↓
-Largest absolute values are at the ends
-     ↓
-Compare left² and right²
-     ↓
-Put larger square at the back
-     ↓
-Move pointer inward
-     ↓
-O(n) Two Pointer solution
+> **In a sorted array, the largest square must come from one of the two ends.**
+
+So:
+
+```text
+Compare left square and right square
+            ↓
+Take the larger one
+            ↓
+Put it at the end of ans
+            ↓
+Move that pointer
+```
+
+This avoids:
+
+```cpp
+square every element + sort
+```
+
+which takes `O(n log n)` time, and gives us an **`O(n)` two-pointer solution**.
