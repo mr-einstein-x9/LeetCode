@@ -114,7 +114,7 @@ After sorting:
   i
   ↓
 [-4, -1, -1, 0, 1, 2]
-      ↑           ↑
+      ↑            ↑
     left         right
 ```
 
