@@ -243,7 +243,6 @@ public:
                 ans[k] = r_sqr;
                 j--;
             }
-
             k--;
         }
 

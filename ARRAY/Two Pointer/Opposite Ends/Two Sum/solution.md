@@ -65,14 +65,17 @@ public:
         while (i < j) {
             int sum = n[i] + n[j];
 
+            // found that unique result
             if (sum == target) {
                 ans.push_back(i + 1);
                 ans.push_back(j + 1);
                 break;
             }
+            // samller than target
             else if (sum < target) {
                 i++;
             }
+            // greater than result
             else {
                 j--;
             }
